@@ -31,8 +31,11 @@ jobs:
           command: |
             if [ -n "$CIRCLE_TAG" ]
             then
-              export CONTAINMENT=$(git branch -a --contains tags/$CIRCLE_TAG)
-              echo "$CONTAINMENT"
+              echo "==== Tag: $CIRCLE_TAG ====="
+              git branch -a --contains tags/$CIRCLE_TAG
+              echo "==== Tag: v2.4.0 ====="
+              git branch -a --contains tags/v2.4.0
+              echo "===== $CIRCLE_TAG containment information ===="
               export CONTAINED_IN_DEV=$(git branch -a --contains tags/$CIRCLE_TAG|grep dev)
               export CONTAINED_IN_REL=$(git branch -a --contains tags/$CIRCLE_TAG|grep release)
               if [ -n "$CONTAINED_IN_DEV" ] && [ -z "$CONTAINED_IN_REL" ]
