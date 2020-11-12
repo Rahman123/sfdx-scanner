@@ -201,7 +201,12 @@ workflows:
                 /^josh.*/
   test-publish:
     jobs:
-      - build
+      - build:
+          filters:
+            # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
+            # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
+            tags:
+              only: /^v.*/
       - unpackaged-sanity:
           requires:
             - build
