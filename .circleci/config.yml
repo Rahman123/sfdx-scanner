@@ -49,6 +49,15 @@ jobs:
             else
               echo "No tag"
             fi
+      - run:
+          command: |
+            if [ -n "beep" ]
+            then
+               exit 1
+            fi
+
+      - run:
+          command: echo "This is fine"
 
 
   self-evaluation:
