@@ -190,7 +190,6 @@ workflows:
   test-publish:
     jobs:
       - build:
-          filters:
       - unpackaged-sanity:
           requires:
             - build
