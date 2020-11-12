@@ -31,12 +31,17 @@ jobs:
           command: |
             if [ -n "$CIRCLE_TAG" ]
             then
-            export CONTAINED_BRANCHES=$(git branch -a --contains tags/$CIRCLE_TAG)
-            if [ -n "$CONTAINED_BRANCHES"|grep dev ] && [ -z "$CONTAINED_BRANCHES"|grep release ]
-            then
-            echo "YAY"
+              export CONTAINED_BRANCHES=$(git branch -a --contains tags/$CIRCLE_TAG)
+              if [ -n "$CONTAINED_BRANCHES"|grep dev ] && [ -z "$CONTAINED_BRANCHES"|grep release ]
+              then
+                echo "In dev but not release"
+              else
+                echo "Not in dev only"
+              fi
+            else
+              echo "No tag"
             fi
-            echo "DONE"
+
 
   self-evaluation:
     <<: *defaults
