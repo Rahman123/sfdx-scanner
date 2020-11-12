@@ -183,7 +183,7 @@ jobs:
           command: echo $CIRCLE_TAG
 
       - run:
-          command: git rev-parse tags/$CIRCLE_TAG
+          command: echo $CIRCLE_BRANCH
 
 workflows:
   version: 2.1
