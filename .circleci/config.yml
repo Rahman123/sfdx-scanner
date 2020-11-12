@@ -223,12 +223,9 @@ workflows:
               only:
                 /^v.*/
       - tagging-test-job:
-          requires:
-            - build
-            - self-evaluation
           filters:
             branches:
               ignore: /.*/
-              tags:
-                only:
-                  /^josh.*/
+            tags:
+              only:
+                /^josh.*/
