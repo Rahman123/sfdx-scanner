@@ -257,7 +257,7 @@ workflows:
             # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
             tags:
               only:
-                /^v.*/
+                /^.*/
       - packaged-sanity:
           requires:
             - publish-latest
