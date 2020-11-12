@@ -176,25 +176,32 @@ jobs:
   tagging-test-job:
     <<: *defaults
     steps:
-      - attach_workspace:
-          at: ~/repo
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run:
           command: echo $CIRCLE_TAG
 
-      - run:
-          command: git branch
-
 workflows:
   version: 2.1
+  josh-tag-testing:
+    jobs:
+      - tagging-test-job:
+          filters:
+            branches:
+              ignore: /*./
+            tags:
+              only:
+                /^josh.*/
   test-publish:
     jobs:
-      - build:
-          filters:
-            # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
-            # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
-            tags:
-              only: /.*/
+      - build
       - unpackaged-sanity:
           requires:
             - build
@@ -225,12 +232,3 @@ workflows:
             tags:
               only:
                 /^v.*/
-      - tagging-test-job:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only:
-                /^josh.*/
