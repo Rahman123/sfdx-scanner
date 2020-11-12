@@ -183,7 +183,7 @@ jobs:
           command: echo $CIRCLE_TAG
 
       - run:
-          command: echo $CIRCLE_BRANCH
+          command: git branch
 
 workflows:
   version: 2.1
@@ -226,6 +226,8 @@ workflows:
               only:
                 /^v.*/
       - tagging-test-job:
+          requires:
+            - build
           filters:
             branches:
               ignore: /.*/
