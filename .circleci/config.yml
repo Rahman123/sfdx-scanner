@@ -173,6 +173,14 @@ jobs:
           tag: latest
           use_tarfile: true
       - release-management/create-github-release
+  tagging-test-job:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - run:
+          command: echo $CIRCLE_TAG
 
 workflows:
   version: 2.1
@@ -214,3 +222,10 @@ workflows:
             tags:
               only:
                 /^v.*/
+      - tagging-test-job:
+          filters:
+            branches:
+              ignore: /.*/
+              tags:
+                only:
+                  /^josh.*/
