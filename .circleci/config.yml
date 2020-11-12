@@ -33,6 +33,8 @@ jobs:
             then
               echo "==== Tag: $CIRCLE_TAG ====="
               git branch -a --contains tags/$CIRCLE_TAG
+              echo "==== Tag: josh-dev-tag ====="
+              git branch -a --contains tags/josh-dev-tag
               echo "==== Tag: v2.4.0 ====="
               git branch -a --contains tags/v2.4.0
               echo "===== $CIRCLE_TAG containment information ===="
