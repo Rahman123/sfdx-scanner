@@ -182,16 +182,15 @@ jobs:
       - run:
           command: echo $CIRCLE_TAG
 
+      - run:
+          command: git rev-parse tags/$CIRCLE_TAG
+
 workflows:
   version: 2.1
   test-publish:
     jobs:
       - build:
           filters:
-            # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
-            # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
-            tags:
-              only: /.*/
       - unpackaged-sanity:
           requires:
             - build
