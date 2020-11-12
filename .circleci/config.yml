@@ -27,6 +27,16 @@ jobs:
             echo "YAY"
             fi
             echo "DONE"
+      - run:
+          command: |
+            if [ -n "$CIRCLE_TAG" ]
+            then
+            export CONTAINED_BRANCHES=$(git branch -a --contains tags/$CIRCLE_TAG)
+            if [ -n "$CONTAINED_BRANCHES"|grep dev ] && [ -z "$CONTAINED_BRANCHES"|grep release ]
+            then
+            echo "YAY"
+            fi
+            echo "DONE"
 
   self-evaluation:
     <<: *defaults
