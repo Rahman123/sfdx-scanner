@@ -37,7 +37,7 @@ jobs:
               then
                 echo "Contained in dev only"
               else
-                echo "Not contained in dev only
+                echo "Not contained in dev only"
               fi
             else
               echo "No tag"
