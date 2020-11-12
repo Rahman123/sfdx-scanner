@@ -32,6 +32,7 @@ jobs:
             if [ -n "$CIRCLE_TAG" ]
             then
               export CONTAINED_BRANCHES=$(git branch -a --contains tags/$CIRCLE_TAG)
+              echo "$CONTAINED_BRANCHES"
               if [ -n "$CONTAINED_BRANCHES"|grep dev ] && [ -z "$CONTAINED_BRANCHES"|grep release ]
               then
                 echo "In dev but not release"
