@@ -22,7 +22,7 @@ jobs:
       # UNIT TESTS
       - run:
           command: |
-            if [ -n $CIRCLE_TAG} ]
+            if [ -n "$CIRCLE_TAG" ]
             then
             echo "YAY"
             fi
