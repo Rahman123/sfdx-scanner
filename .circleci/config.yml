@@ -205,17 +205,19 @@ jobs:
 
       - run: md test-results
 
+      - run: ./gradlew build
+
       - run:
           name: "List rules"
           command: bin\run.cmd scanner:rule:list
 
-      - run: yarn list
-      - run: yarn list|grep nyc
-      - run: npx nyc -h
-      - run:
-          name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
-          when: always
+#      - run: yarn list
+#      - run: yarn list|grep nyc
+#      - run: npx nyc -h
+#      - run:
+#          name: test
+#          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
+#          when: always
 
 workflows:
   version: 2.1
