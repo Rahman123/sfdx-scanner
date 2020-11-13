@@ -7,10 +7,6 @@ defaults: &defaults
   working_directory: ~/repo
   docker:
     - image: circleci/openjdk:11.0.2-jdk-node
-windefaults: &windefaults
-  working_directory: C:/repo
-  docker:
-    - image: circleci/openjdk:11.0.2-jdk-node
 
 orbs:
   win: circleci/windows@2.2.0 # The Windows orb give you everything you need to start using the Windows executor.
@@ -201,7 +197,7 @@ jobs:
     executor:
       name: win/default # executor type
       size: "medium"
-    <<: *windefaults
+    working_directory: C:\repo
 
     steps:
       - checkout
@@ -214,33 +210,35 @@ jobs:
             - v1-dependencies-
 
       - run: yarn --ignore-scripts
-      - run: yarn build
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - persist_to_workspace:
-          root: C:\repo
-          paths: .
-
-      # UNIT TESTS
-      - run:
-          name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
-          when: always
-
-      - run:
-          name: eslint
-          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
-          when: always
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts: # Upload test coverage as artifact.
-          path: test-coverage
+      - run: yarn list
+      - run: yarn list|grep nyc
+#      - run: yarn build
+#
+#      - save_cache:
+#          paths:
+#            - node_modules
+#          key: v1-dependencies-{{ checksum "package.json" }}
+#
+#      - persist_to_workspace:
+#          root: C:\repo
+#          paths: .
+#
+#      # UNIT TESTS
+#      - run:
+#          name: test
+#          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
+#          when: always
+#
+#      - run:
+#          name: eslint
+#          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
+#          when: always
+#
+#      - store_test_results:
+#          path: test-results
+#
+#      - store_artifacts: # Upload test coverage as artifact.
+#          path: test-coverage
 
 workflows:
   version: 2.1
