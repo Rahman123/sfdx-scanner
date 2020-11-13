@@ -14,50 +14,6 @@ orbs:
   codecov: codecov/codecov@1.1.1
 
 jobs:
-  build:
-    <<: *defaults
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn --ignore-scripts
-      - run: yarn build
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - persist_to_workspace:
-          root: ~/repo
-          paths: .
-
-      # UNIT TESTS
-      - run:
-          name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
-          when: always
-
-      - run:
-          name: eslint
-          command: yarn lint --format junit --output-file test-results/eslint/eslint.xml
-          when: always
-
-      - codecov/upload:
-          file: test-coverage/coverage-final.json
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts: # upload test coverage as artifact.
-          path: test-coverage
-
   self-evaluation:
     <<: *defaults
     steps:
@@ -193,6 +149,70 @@ jobs:
           use_tarfile: true
       - release-management/create-github-release
 
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn --ignore-scripts
+      - run: yarn build
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+      # UNIT TESTS
+#      - run:
+#          name: test
+#          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
+#          when: always
+#
+#      - run:
+#          name: eslint
+#          command: yarn lint --format junit --output-file test-results/eslint/eslint.xml
+#          when: always
+#
+#      - codecov/upload:
+#          file: test-coverage/coverage-final.json
+#
+#      - store_test_results:
+#          path: test-results
+#
+#      - store_artifacts: # upload test coverage as artifact.
+#          path: test-coverage
+
+  windows-tests:
+    executor:
+      name: win/default # executor type
+      size: "medium"
+    working_directory: C:\repo
+    steps:
+      # Commands are run in a Windows virtual machine environment
+      - attach_workspace:
+          at: C:\repo
+
+      - run: md test-results
+
+      - run:
+          name: "List rules"
+          command: bin\run.cmd scanner:rule:list
+
+      - run: yarn list
+      - run: yarn list|grep nyc
+      - run: npx nyc -h
+
 workflows:
   version: 2.1
   test-publish:
@@ -203,33 +223,34 @@ workflows:
             # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
             tags:
               only: /.*/
-      - unpackaged-sanity:
-          requires:
-            - build
-      - self-evaluation:
-          requires:
-            - build
-      - publish-latest:
-          # This job should only run after 'build' finishes successfully.
-          requires:
-            - build
-            - self-evaluation
-          filters:
-            # We never want to publish branches, so we need to explicitly ignore all of them.
-            branches:
-              ignore: /.*/
-            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
-            tags:
-              only:
-                /^v.*/
-      - packaged-sanity:
-          requires:
-            - publish-latest
-          filters:
-            # We never want to publish branches, so we need to explicitly ignore all of them.
-            branches:
-              ignore: /.*/
-            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
-            tags:
-              only:
-                /^v.*/
+#      - unpackaged-sanity:
+#          requires:
+#            - build
+#      - self-evaluation:
+#          requires:
+#            - build
+#      - publish-latest:
+#          # This job should only run after 'build' finishes successfully.
+#          requires:
+#            - build
+#            - self-evaluation
+#          filters:
+#            # We never want to publish branches, so we need to explicitly ignore all of them.
+#            branches:
+#              ignore: /.*/
+#            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
+#            tags:
+#              only:
+#                /^v.*/
+#      - packaged-sanity:
+#          requires:
+#            - publish-latest
+#          filters:
+#            # We never want to publish branches, so we need to explicitly ignore all of them.
+#            branches:
+#              ignore: /.*/
+#            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
+#            tags:
+#              only:
+#                /^v.*/
+#
