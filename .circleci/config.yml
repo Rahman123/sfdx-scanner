@@ -14,33 +14,6 @@ orbs:
   codecov: codecov/codecov@1.1.1
 
 jobs:
-  windows-build:
-    executor:
-      name: win/default # executor type
-      size: "medium"
-    working_directory: C:\repo
-
-    steps:
-      # Commands are run in a Windows virtual machine environment
-      - attach_workspace:
-          at: C:\repo
-      # UNIT TESTS
-      - run:
-          name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
-          when: always
-
-      - run:
-          name: eslint
-          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
-          when: always
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts: # Upload test coverage as artifact.
-          path: test-coverage
-
   build:
     <<: *defaults
     steps:
@@ -83,6 +56,33 @@ jobs:
           path: test-results
 
       - store_artifacts: # upload test coverage as artifact.
+          path: test-coverage
+
+  windows-build:
+    executor:
+      name: win/default # executor type
+      size: "medium"
+    working_directory: C:\repo
+
+    steps:
+      # Commands are run in a Windows virtual machine environment
+      - attach_workspace:
+          at: C:\repo
+      # UNIT TESTS
+      - run:
+          name: test
+          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
+          when: always
+
+      - run:
+          name: eslint
+          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
+          when: always
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts: # Upload test coverage as artifact.
           path: test-coverage
 
   self-evaluation:
@@ -224,13 +224,15 @@ workflows:
   version: 2.1
   test-publish:
     jobs:
-      - windows-build:
+      - build:
           filters:
             # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
             # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
             tags:
               only: /.*/
-      - build:
+      - windows-build:
+          requires:
+            - build
           filters:
             # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
             # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
