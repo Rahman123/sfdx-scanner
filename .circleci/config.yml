@@ -24,9 +24,22 @@ jobs:
       # Commands are run in a Windows virtual machine environment
       - attach_workspace:
           at: C:\repo
+      # UNIT TESTS
+      - run:
+          name: test
+          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
+          when: always
 
       - run:
-          command: echo "Ths is just to see if Windows and OSX will run in parallel."
+          name: eslint
+          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
+          when: always
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts: # Upload test coverage as artifact.
+          path: test-coverage
 
   build:
     <<: *defaults
