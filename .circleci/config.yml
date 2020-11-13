@@ -11,9 +11,6 @@ wind-defaults: &win-defaults
   working_directory: C:/repo
   docker:
     - image: circleci/openjdk:11.0.2-jdk-node
-  executor:
-    name: win/default # executor type
-    size: "medium"
 
 orbs:
   win: circleci/windows@2.2.0 # The Windows orb give you everything you need to start using the Windows executor.
@@ -201,6 +198,9 @@ jobs:
       - release-management/create-github-release
 
   windows-build:
+    executor:
+      name: win/default # executor type
+      size: "medium"
     <<: *win-defaults
 
     steps:
