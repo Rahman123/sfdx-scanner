@@ -14,6 +14,20 @@ orbs:
   codecov: codecov/codecov@1.1.1
 
 jobs:
+  windows-build:
+    executor:
+      name: win/default # executor type
+      size: "medium"
+    working_directory: C:\repo
+
+    steps:
+      # Commands are run in a Windows virtual machine environment
+      - attach_workspace:
+          at: C:\repo
+
+      - run:
+          command: echo "Ths is just to see if Windows and OSX will run in parallel."
+
   build:
     <<: *defaults
     steps:
@@ -197,6 +211,12 @@ workflows:
   version: 2.1
   test-publish:
     jobs:
+      - windows-build:
+          filters:
+            # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
+            # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
+            tags:
+              only: /.*/
       - build:
           filters:
             # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
@@ -206,14 +226,17 @@ workflows:
       - unpackaged-sanity:
           requires:
             - build
+            - windows-build
       - self-evaluation:
           requires:
             - build
+            - windows-build
       - publish-latest:
           # This job should only run after 'build' finishes successfully.
           requires:
             - build
             - self-evaluation
+            - windows-build
           filters:
             # We never want to publish branches, so we need to explicitly ignore all of them.
             branches:
