@@ -223,7 +223,7 @@ workflows:
             # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
             tags:
               only: /.*/
-      - windows-test:
+      - windows-tests:
           requires:
             - build
 #      - unpackaged-sanity:
