@@ -7,6 +7,13 @@ defaults: &defaults
   working_directory: ~/repo
   docker:
     - image: circleci/openjdk:11.0.2-jdk-node
+wind-defaults: &win-defaults
+  working_directory: C:/repo
+  docker:
+    - image: circleci/openjdk:11.0.2-jdk-node
+  executor:
+    name: win/default # executor type
+    size: "medium"
 
 orbs:
   win: circleci/windows@2.2.0 # The Windows orb give you everything you need to start using the Windows executor.
@@ -194,10 +201,7 @@ jobs:
       - release-management/create-github-release
 
   windows-build:
-    executor:
-      name: win/default # executor type
-      size: "medium"
-    working_directory: C:\repo
+    <<: *win-defaults
 
     steps:
       - checkout
@@ -209,7 +213,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn
+      - run: yarn --ignore-scripts
       - run: yarn build
 
       - save_cache:
