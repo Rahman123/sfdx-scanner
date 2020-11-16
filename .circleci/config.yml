@@ -205,7 +205,7 @@ jobs:
 
       - run: md test-results
 
-      - run: mocha "./test/**/*.test.ts"
+      - run: npx mocha "./test/**/*.test.ts"
 
       - run:
           name: "List rules"
