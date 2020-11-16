@@ -8,37 +8,14 @@ group = "sfdx"
 version = "1.0"
 
 val distDir = "$buildDir/../../dist"
-val pmdVersion = "6.29.0"
-val pmdFile = "pmd-bin-$pmdVersion.zip"
-val pmdUrl = "https://github.com/pmd/pmd/releases/download/pmd_releases%2F${pmdVersion}/${pmdFile}"
 
 repositories {
   mavenCentral()
   google()
 }
 
-tasks.register<de.undercouch.gradle.tasks.download.Download>("downloadPmd") {
-  src(pmdUrl)
-  dest(buildDir)
-  overwrite(false)
-}
-
-tasks.register<Copy>("installPmd") {
-  dependsOn("downloadPmd")
-  from(zipTree("$buildDir/$pmdFile"))
-  into("$distDir/pmd")
-  // TODO include("just the *.jars etc. we care about")
-  includeEmptyDirs = false
-  eachFile {
-    relativePath = RelativePath(true, *relativePath.segments.drop(1).toTypedArray())
-  }
-}
-
 dependencies {
-  implementation ("com.googlecode.json-simple:json-simple:1.1.1")
-  implementation("com.google.code.gson:gson:2.3")
   implementation("com.google.guava:guava:28.0-jre")
-  testImplementation("org.mockito:mockito-core:1.+")
   testImplementation("junit", "junit", "4.12")
   testImplementation("org.hamcrest:hamcrest:2.1")
   // Used in unit tests
@@ -61,6 +38,5 @@ tasks.named<Sync>("installDist") {
 
 tasks.named("assemble") {
   dependsOn("installDist")
-  dependsOn("installPmd")
 }
 
