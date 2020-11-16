@@ -162,8 +162,8 @@ jobs:
             - v1-dependencies-
 
       - run: yarn --ignore-scripts
-      - run: yarn build
-      - run: yarn list
+#      - run: yarn build
+#      - run: yarn list
 
       - save_cache:
           paths:
