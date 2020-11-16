@@ -206,6 +206,7 @@ jobs:
 
       - run: md test-results
       - run: yarn list
+      - run: ./gradlew.bat  build
 
       - run: npx mocha "./test/**/*.test.ts"
 
