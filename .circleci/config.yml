@@ -163,6 +163,7 @@ jobs:
 
       - run: yarn --ignore-scripts
       - run: yarn build
+      - run: yarn list
 
       - save_cache:
           paths:
@@ -204,6 +205,7 @@ jobs:
           at: C:\repo
 
       - run: md test-results
+      - run: yarn list
 
       - run: npx mocha "./test/**/*.test.ts"
 
