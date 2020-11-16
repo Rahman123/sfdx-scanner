@@ -200,41 +200,17 @@ jobs:
       size: "medium"
     working_directory: C:\repo
     steps:
-      # Commands are run in a Windows virtual machine environment
-      - attach_workspace:
-          at: C:\repo
-
-      - run: md test-results
-      - run: yarn list
-      - run: ./gradlew hello
-
-      - run: npx mocha "./test/**/*.test.ts"
-
-      - run:
-          name: "List rules"
-          command: bin\run.cmd scanner:rule:list
-
-#      - run: yarn list
-#      - run: yarn list|grep nyc
-#      - run: npx nyc -h
-#      - run:
-#          name: test
-#          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
-#          when: always
+      - checkout
+      - run: ./gradlew.bat build
 
 workflows:
   version: 2.1
   test-publish:
     jobs:
-      - build:
+      - windows-tests:
           filters:
-            # We want this to run against all tags and branches. Branches are inclusive by default, so we don't need to
-            # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
             tags:
               only: /.*/
-      - windows-tests:
-          requires:
-            - build
 #      - unpackaged-sanity:
 #          requires:
 #            - build
