@@ -1,4 +1,5 @@
 import picomatch = require('picomatch');
+import normalize = require('normalize-path');
 
 type MatchingFunction = (string) => boolean;
 
@@ -34,7 +35,7 @@ export class PathMatcher {
 		// pattern and negating the result of that matcher.
 		const inclusionPatterns = [];
 		const exclusionPatterns = [];
-		patterns.forEach(p => p.startsWith('!') ? exclusionPatterns.push(p.slice(1)) : inclusionPatterns.push(p));
+		patterns.forEach(p => p.startsWith('!') ? exclusionPatterns.push(normalize(p.slice(1))) : inclusionPatterns.push(normalize(p)));
 
 		const inclusionMatcher = inclusionPatterns && inclusionPatterns.length ? picomatch(inclusionPatterns) : (): boolean => true;
 		const exclusionMatcher = exclusionPatterns && exclusionPatterns.length ? picomatch(exclusionPatterns) : (): boolean => false;
@@ -48,7 +49,7 @@ export class PathMatcher {
 	 * @returns {string[]} - The subset of the target strings that match the provided patterns.
 	 */
 	public filterPathsByPatterns(targets: string[]): string[] {
-		return targets.filter(this.matcher);
+		return targets.map(t => normalize(t)).filter(this.matcher);
 	}
 
 	/**
