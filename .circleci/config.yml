@@ -68,10 +68,12 @@ jobs:
       - attach_workspace:
           at: C:\repo
       - run: yarn list
+
       - run:
           name: joshglobal
           command: yarn joshglobal
           when: always
+
       - run:
           name: joshlocal
           commmand: yarn joshlocal
