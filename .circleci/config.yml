@@ -69,10 +69,9 @@ jobs:
           at: C:\repo
 
       - run: yarn list
-
+      - run: yarn joshlocal
       - run: yarn joshglobal
 
-      - run: yarn joshlocal
 
   self-evaluation:
     <<: *defaults
