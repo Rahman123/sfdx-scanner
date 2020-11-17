@@ -18,10 +18,11 @@ jobs:
     executor:
       name: win/default # executor type
       size: "medium"
+      shell: bash.exe
     working_directory: C:\repo
     steps:
       - checkout
-      - run: ./gradlew build
+      - run: ./gradlew.bat build
 
 workflows:
   version: 2.1
