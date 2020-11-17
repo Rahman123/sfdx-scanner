@@ -101,7 +101,7 @@
 		"build": "./gradlew build",
 		"prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
 		"postpack": "rm -f oclif.manifest.json",
-		"lint": "eslint ./src --ext .ts",
+		"lint": "npx eslint ./src --ext .ts",
 		"test": "./gradlew test && npx nyc mocha \"./test/**/*.test.ts\"",
 		"joshglobal": "nyc -h",
 		"joshlocal": "npx nyc -h",

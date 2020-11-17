@@ -74,12 +74,12 @@ jobs:
       - run: yarn joshlocal
       - run:
           name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
+          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results/mocha/test-results.xml
           when: always
 
       - run:
           name: eslint
-          command: yarn lint --format junit --output-file test-results\eslint\eslint.xml
+          command: yarn lint --format junit --output-file test-results/eslint/eslint.xml
           when: always
 
       - store_test_results:
