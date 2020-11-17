@@ -58,6 +58,20 @@ jobs:
       - store_artifacts: # upload test coverage as artifact.
           path: test-coverage
 
+  windows-build:
+    executor:
+      name: win/default # executor type
+      size: "medium"
+      shell: bash.exe
+    working_directory: C:\repo
+    steps:
+      - attach_workspace:
+          at: C:\repo
+      - run:
+          name: test
+          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=ttest-results\mocha\test-results.xml
+          when: always
+
   self-evaluation:
     <<: *defaults
     steps:
@@ -203,33 +217,37 @@ workflows:
             # specify anything. But tags are exclusive by default, so we need to specify that all tags should be included.
             tags:
               only: /.*/
-      - unpackaged-sanity:
+      - windows-build:
           requires:
             - build
-      - self-evaluation:
-          requires:
-            - build
-      - publish-latest:
-          # This job should only run after 'build' finishes successfully.
-          requires:
-            - build
-            - self-evaluation
-          filters:
-            # We never want to publish branches, so we need to explicitly ignore all of them.
-            branches:
-              ignore: /.*/
-            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
-            tags:
-              only:
-                /^v.*/
-      - packaged-sanity:
-          requires:
-            - publish-latest
-          filters:
-            # We never want to publish branches, so we need to explicitly ignore all of them.
-            branches:
-              ignore: /.*/
-            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
-            tags:
-              only:
-                /^v.*/
+#      - unpackaged-sanity:
+#          requires:
+#            - build
+#      - self-evaluation:
+#          requires:
+#            - build
+#      - publish-latest:
+#          # This job should only run after 'build' finishes successfully.
+#          requires:
+#            - build
+#            - self-evaluation
+#          filters:
+#            # We never want to publish branches, so we need to explicitly ignore all of them.
+#            branches:
+#              ignore: /.*/
+#            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
+#            tags:
+#              only:
+#                /^v.*/
+#      - packaged-sanity:
+#          requires:
+#            - publish-latest
+#          filters:
+#            # We never want to publish branches, so we need to explicitly ignore all of them.
+#            branches:
+#              ignore: /.*/
+#            # We want to publish any tags that are formatted vXXXX, since that's our semantic versioning syntax.
+#            tags:
+#              only:
+#                /^v.*/
+#
