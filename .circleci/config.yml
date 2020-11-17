@@ -67,9 +67,14 @@ jobs:
     steps:
       - attach_workspace:
           at: C:\repo
+      - run: yarn list
       - run:
-          name: test
-          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=ttest-results\mocha\test-results.xml
+          name: joshglobal
+          command: yarn joshglobal
+          when: always
+      - run:
+          name: joshlocal
+          commmand: yarn joshlocal
           when: always
 
   self-evaluation:
