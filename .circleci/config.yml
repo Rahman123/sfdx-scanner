@@ -68,7 +68,7 @@ jobs:
       - attach_workspace:
           at: C:\repo
 
-      - run: md test-results
+      - run: mkdir test-results
 
       - run: yarn list
       - run: yarn joshlocal
