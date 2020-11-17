@@ -70,7 +70,10 @@ jobs:
 
       - run: yarn list
       - run: yarn joshlocal
-      - run: yarn joshglobal
+      - run:
+          name: test
+          command: yarn test --reporter mocha-junit-reporter --reporter-option mochaFile=test-results\mocha\test-results.xml
+          when: always
 
 
   self-evaluation:
