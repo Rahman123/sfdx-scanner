@@ -67,6 +67,7 @@ jobs:
     steps:
       - attach_workspace:
           at: C:\repo
+
       - run: yarn list
 
       - run:
