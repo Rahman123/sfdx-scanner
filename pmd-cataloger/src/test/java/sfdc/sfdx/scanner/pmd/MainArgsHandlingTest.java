@@ -24,7 +24,7 @@ public class MainArgsHandlingTest {
 		final Map<String, List<String>> stringListMap = main.parseArguments(args);
 
 		// Validate
-		assertEquals("Unexpected number of items in parsed map", 3, stringListMap.size());
+		assertEquals("Unexpected number of items in parsed map", 1, stringListMap.size());
 		assertTrue("Language not found in parsed map", stringListMap.containsKey(language));
 
 		final List<String> parsedPaths = stringListMap.get(language);
