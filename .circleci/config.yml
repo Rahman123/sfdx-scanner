@@ -72,12 +72,10 @@ jobs:
       - run:
           name: joshglobal
           command: yarn joshglobal
-          when: always
 
       - run:
           name: joshlocal
           commmand: yarn joshlocal
-          when: always
 
   self-evaluation:
     <<: *defaults
