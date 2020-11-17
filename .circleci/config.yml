@@ -70,13 +70,9 @@ jobs:
 
       - run: yarn list
 
-      - run:
-          name: joshglobal
-          command: yarn joshglobal
+      - run: yarn joshglobal
 
-      - run:
-          name: joshlocal
-          commmand: yarn joshlocal
+      - run: yarn joshlocal
 
   self-evaluation:
     <<: *defaults
