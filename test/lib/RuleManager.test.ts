@@ -573,7 +573,7 @@ describe('RuleManager', () => {
 				expect(results[0].paths.length).to.equal(2, 'Wrong number of paths matched');
 				expect(results[1].target).to.equal(targets[3], 'Wrong glob matched');
 				expect(results[1].isDirectory).to.not.equal(true, 'Should not be flagged as directory');
-				expect(results[1].paths.length).to.equal(3, 'Wrong number of paths matched');
+				expect(results[1].paths.length).to.equal(1, 'Wrong number of paths matched');
 			});
 		});
 	});
