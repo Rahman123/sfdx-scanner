@@ -39,12 +39,12 @@ public class LanguageXmlFileMappingTest {
 		setupCategoriesAndRulesets();
 
 		pathMap = languageXmlFileMapping.getCategoryPaths();
-		assertThat(pathMap.keySet(), hasSize(equalTo(4)));
+		assertThat(pathMap.keySet(), hasSize(equalTo(2)));
 		assertThat(pathMap.keySet(), hasItems(APEX.toLowerCase(), JAVA.toLowerCase()));
 
 		paths = pathMap.get(APEX.toLowerCase());
 		assertThat(System.getProperty("os.name"), equalTo("Linux"));
-		assertThat(paths, hasSize(equalTo(2)));
+		assertThat(paths, hasSize(equalTo(4)));
 		assertThat(paths, hasItems("category/apex/performance1.xml", "category/apex/performance2.xml",
 				"category/apex/performance3.xml", "category/apex/performance4.xml"));
 
