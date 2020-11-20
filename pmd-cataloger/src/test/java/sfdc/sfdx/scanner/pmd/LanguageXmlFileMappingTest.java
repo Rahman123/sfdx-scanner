@@ -54,27 +54,6 @@ public class LanguageXmlFileMappingTest {
 	}
 
 	@Test
-	public void testCategories() {
-		Map<String, Set<String>> pathMap;
-		Set<String> paths;
-
-		setupCategoriesAndRulesets();
-
-		pathMap = languageXmlFileMapping.getCategoryPaths();
-		assertThat(pathMap.keySet(), hasSize(equalTo(2)));
-		assertThat(pathMap.keySet(), hasItems(APEX.toLowerCase(), JAVA.toLowerCase()));
-
-		paths = pathMap.get(APEX.toLowerCase());
-		assertThat(paths, hasSize(equalTo(4)));
-		assertThat(paths, hasItems("category/apex/performance1.xml", "category/apex/performance2.xml",
-			"category/apex/performance3.xml", "category/apex/performance4.xml"));
-
-		paths = pathMap.get(JAVA.toLowerCase());
-		assertThat(paths, hasSize(equalTo(2)));
-		assertThat(paths, hasItems("category/java/performance1.xml", "category/java/performance2.xml"));
-	}
-
-	@Test
 	public void testRulesets() {
 		Map<String, Set<String>> pathMap;
 		Set<String> paths;
